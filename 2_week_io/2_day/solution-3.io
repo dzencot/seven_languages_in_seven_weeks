@@ -17,6 +17,18 @@ DimList get := method(x, y,
   self at(x) at(y)
 )
 
+DimList getListStr := method(
+  x := self size
+  y := self at(0) size
+  result := ""
+  for(i, 0, (x - 1), 1,
+    for(j, 0, (y - 1), 1,
+      result = result .. " " .. self get(i, j)
+    )
+  )
+  return(result)
+)
+
 transpose := method(dimList,
   newDimList := DimList clone
   y := dimList size
@@ -32,8 +44,19 @@ transpose := method(dimList,
 
 testDim := DimList clone
 testDim dim(3, 3)
-testDim set(1, 2, "test")
+testDim set(1, 2, "test2")
 
 newDim := transpose(testDim)
 
 (testDim get(1, 2) == newDim get(2, 1)) println
+
+file := File with("test.txt")
+file open()
+listString := newDim getListStr()
+file write(listString)
+file close
+
+file1 := File with("test.txt")
+file1 open()
+file1 contents println
+file1 close
