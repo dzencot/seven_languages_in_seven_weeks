@@ -4,7 +4,7 @@ DimList dim := method(x, y,
   self setSize(x)
   for(i, 0, (x - 1), 1,
     self atPut(i, (list() setSize(y)));
-  );
+  )
 
   return(self);
 )
@@ -17,8 +17,23 @@ DimList get := method(x, y,
   self at(x) at(y)
 )
 
-testDim := DimList
-testDim dim(2, 2)
-testDim set(0, 0, "test")
+transpose := method(dimList,
+  newDimList := DimList clone
+  y := dimList size
+  x := dimList at(0) size
+  newDimList dim(x, y)
+  for(i, 0, (y - 1), 1,
+    for(j, 0, (x - 1), 1,
+      newDimList set(j, i, dimList get(i, j))
+    )
+  )
+  return(newDimList)
+)
 
-testDim get(0, 0) println
+testDim := DimList clone
+testDim dim(3, 3)
+testDim set(1, 2, "test")
+
+newDim := transpose(testDim)
+
+(testDim get(1, 2) == newDim get(2, 1)) println
